@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>永井康太 | Personal Trainer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brown-dark: #2C1F14;
+    --brown-mid: #4A3728;
+    --brown-light: #7A5C44;
+    --cream: #F5F0E8;
+    --cream-light: #FAF7F2;
+    --gold: #B8965A;
+    --gold-light: #D4B07A;
+    --text-main: #1E1410;
+    --text-body: #3D2E22;
+    --text-muted: #7A6A5C;
+    --white: #FFFFFF;
+    --border: rgba(74,55,40,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'YuMincho', Georgia, serif;
+    background: var(--cream-light);
+    color: var(--text-body);
+    font-size: 16px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== MOTION (subtle) ===== */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(2px);
+    transition: opacity 700ms ease, transform 700ms ease, filter 700ms ease;
+    will-change: opacity, transform, filter;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  .reveal[data-reveal="up"] { transform: translateY(18px); }
+  .reveal[data-reveal="left"] { transform: translateX(16px); }
+  .reveal[data-reveal="right"] { transform: translateX(-16px); }
+
+  .reveal.is-visible[data-reveal="left"],
+  .reveal.is-visible[data-reveal="right"] { transform: translateX(0); }
+
+  .sans {
+    font-family: 'Hiragino Sans', 'Yu Gothic', 'YuGothic', 'Noto Sans JP', sans-serif;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(245,240,232,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #000;
+    font-family: 'Hiragino Sans', sans-serif;
+  }
+
+  .nav-logo span { color: inherit; }
+
+  .nav-cta {
+    display: inline-block;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--brown-dark);
+    border: 1px solid var(--brown-mid);
+    padding: 7px 18px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.25s;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  .nav-cta:hover {
+    background: var(--brown-dark);
+    color: var(--cream);
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 32px 80px;
+    background: var(--brown-dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(184,150,90,0.08) 0%, transparent 70%);
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    border: 1px solid rgba(184,150,90,0.4);
+    padding: 5px 16px;
+    border-radius: 1px;
+    margin-bottom: 40px;
+  }
+
+  .hero-copy-main {
+    font-size: clamp(26px, 6vw, 44px);
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+    line-height: 1.55;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .hero-copy-main em {
+    font-style: normal;
+    color: var(--gold-light);
+  }
+
+  .hero-copy-sub {
+    font-size: clamp(13px, 2.5vw, 15px);
+    color: rgba(245,240,232,0.55);
+    letter-spacing: 0.08em;
+    margin-bottom: 56px;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.9;
+  }
+
+  .hero-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--brown-dark);
+    background: var(--gold);
+    padding: 16px 40px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+    font-weight: 500;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); }
+
+  .btn-ghost {
+    display: inline-block;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--cream);
+    border: 1px solid rgba(245,240,232,0.35);
+    padding: 16px 40px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  .btn-ghost:hover {
+    background: rgba(245,240,232,0.08);
+    border-color: rgba(245,240,232,0.6);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(245,240,232,0.3);
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(184,150,90,0.5));
+  }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 88px 24px; }
+
+  .section-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: block;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 400;
+    color: var(--brown-dark);
+    letter-spacing: 0.06em;
+    line-height: 1.55;
+    margin-bottom: 32px;
+  }
+
+  .section-body {
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 2;
+    letter-spacing: 0.03em;
+  }
+
+  .section-body p + p { margin-top: 20px; }
+
+  .divider {
+    width: 32px; height: 1px;
+    background: var(--gold);
+    margin: 0 auto 48px;
+    opacity: 0.5;
+  }
+
+  /* ===== CONCEPT ===== */
+  .section-concept {
+    background: var(--white);
+    text-align: center;
+  }
+
+  .concept-quote {
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--brown-dark);
+    letter-spacing: 0.06em;
+    line-height: 1.8;
+    font-weight: 400;
+    margin-bottom: 40px;
+    padding: 0 16px;
+  }
+
+  /* ===== REASONS ===== */
+  .section-reasons { background: var(--cream); }
+
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 48px;
+  }
+
+  .reason-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    border-radius: 2px;
+  }
+
+  .reason-num {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .reason-card h3 {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--brown-dark);
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .reason-card p {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.85;
+  }
+
+  /* ===== TARGET ===== */
+  .section-target {
+    background: var(--brown-dark);
+    text-align: center;
+  }
+
+  .section-target .section-title { color: var(--cream); }
+
+  .target-list {
+    list-style: none;
+    margin: 0 auto;
+    max-width: 540px;
+    text-align: left;
+  }
+
+  .target-list li {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(245,240,232,0.75);
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(245,240,232,0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    line-height: 1.65;
+  }
+
+  .target-list li::before {
+    content: '—';
+    color: var(--gold);
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  /* ===== SERVICES ===== */
+  .section-service { background: var(--white); }
+
+  .service-list {
+    margin-top: 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .service-item {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .service-item-left h3 {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--brown-dark);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+
+  .service-item-left p {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 400px;
+  }
+
+  .service-price {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 15px;
+    color: var(--brown-mid);
+    white-space: nowrap;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    padding-top: 4px;
+  }
+
+  .service-price span {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .service-cta {
+    margin-top: 28px;
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+  }
+
+  .service-note {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    line-height: 1.9;
+  }
+
+  /* ===== TRAINER ===== */
+  .section-trainer { background: var(--cream); }
+
+  .trainer-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 40px 32px;
+    border-radius: 2px;
+    margin-top: 48px;
+  }
+
+  .trainer-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--brown-mid);
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gold-light);
+    overflow: hidden;
+  }
+
+  .trainer-icon img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .trainer-name {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--brown-dark);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .trainer-title {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+
+  .trainer-body {
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 2.05;
+    letter-spacing: 0.03em;
+  }
+
+  .trainer-body p + p { margin-top: 18px; }
+
+  /* ===== ACHIEVEMENTS ===== */
+  .section-achievements { background: var(--white); }
+
+  .achievements-box {
+    background: var(--cream-light);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    border-radius: 2px;
+    margin-top: 48px;
+  }
+
+  .achievements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .achievements-item {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-body);
+    line-height: 1.9;
+  }
+
+  .achievements-year {
+    display: inline-block;
+    min-width: 4.5em;
+    color: var(--brown-dark);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  /* ===== FLOW ===== */
+  .section-flow { background: var(--white); }
+
+  .flow-steps {
+    margin-top: 48px;
+  }
+
+  .flow-step {
+    display: flex;
+    gap: 24px;
+    padding-bottom: 36px;
+  }
+
+  .flow-step:last-child { padding-bottom: 0; }
+
+  .flow-step-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .flow-num {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 12px;
+    color: var(--gold);
+    flex-shrink: 0;
+    background: var(--white);
+  }
+
+  .flow-connector {
+    width: 1px; flex: 1;
+    background: var(--border);
+    margin-top: 8px;
+  }
+
+  .flow-step:last-child .flow-connector { display: none; }
+
+  .flow-content {
+    padding-top: 6px;
+    padding-bottom: 8px;
+  }
+
+  .flow-content h3 {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--brown-dark);
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+
+  .flow-content p {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  /* ===== CONTACT ===== */
+  .section-contact { background: var(--cream); }
+
+  .contact-wrap {
+    margin-top: 48px;
+    display: grid;
+    gap: 48px;
+  }
+
+  .form-group { margin-bottom: 18px; }
+
+  .form-group label {
+    display: block;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--text-body);
+    padding: 13px 16px;
+    font-size: 14px;
+    font-family: 'Hiragino Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+    border-radius: 2px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: #c0b0a0; }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--gold); }
+
+  .form-group textarea { height: 110px; resize: none; }
+
+  .form-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%237A6A5C' d='M5 7L0.5 2.5h9z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-color: var(--white);
+    padding-right: 36px;
+  }
+
+  .form-group select option { background: var(--white); }
+
+  .btn-form-submit {
+    width: 100%;
+    background: var(--gold);
+    color: var(--brown-dark);
+    border: none;
+    padding: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+    font-family: 'Hiragino Sans', sans-serif;
+    border-radius: 2px;
+    transition: background 0.2s;
+    margin-top: 4px;
+  }
+
+  .btn-form-submit:hover { background: var(--gold-light); }
+
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0 8px;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.25em;
+  }
+
+  .or-divider::before, .or-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .btn-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: #06C755;
+    color: #fff;
+    text-decoration: none;
+    padding: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+    font-family: 'Hiragino Sans', sans-serif;
+    transition: background 0.2s;
+  }
+
+  .btn-line:hover { background: #05b34d; }
+  .btn-line svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .success-msg {
+    display: none;
+    background: #f0f7f0;
+    border: 1px solid #b8d8b8;
+    color: #3a7a3a;
+    padding: 14px;
+    font-size: 13px;
+    font-family: 'Hiragino Sans', sans-serif;
+    text-align: center;
+    margin-top: 14px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== FAQ ===== */
+  .section-faq { background: var(--white); }
+
+  .faq-list { margin-top: 48px; }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 24px 0;
+  }
+
+  .faq-q {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--brown-dark);
+    letter-spacing: 0.03em;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+
+  .faq-q::before {
+    content: 'Q';
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    width: 22px; height: 22px;
+    min-width: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  .faq-a {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.85;
+    padding-left: 34px;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: #1A1009;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.35);
+    margin-bottom: 16px;
+  }
+
+  .footer-info {
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(245,240,232,0.2);
+    line-height: 2.2;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-copy {
+    margin-top: 24px;
+    font-family: 'Hiragino Sans', sans-serif;
+    font-size: 10px;
+    color: rgba(245,240,232,0.12);
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (min-width: 640px) {
+    .reasons-grid { grid-template-columns: 1fr 1fr; }
+    .flow-num { background: var(--cream); }
+  }
+
+  @media (max-width: 480px) {
+    .service-item { flex-direction: column; gap: 12px; }
+    .service-price { text-align: left; }
+    .trainer-box { padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Nagai Kouta</div>
+  <a class="nav-cta sans" href="#contact">体験を予約する</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag sans">PERSONAL TRAINER</div>
+  <h1 class="hero-copy-main">
+    本気で変わりたいなら、<br><em>本質から向き合う。</em>
+  </h1>
+  <p class="hero-copy-sub sans">
+    見た目だけでなく、自信も、生活も整っていく。<br>
+    「変わる」を本気で実現するための、マンツーマン指導。
+  </p>
+  <div class="hero-btns">
+    <a class="btn-primary sans" href="#contact">体験トレーニングを予約する</a>
+    <a class="btn-ghost sans" href="#concept">プロフィールを見る</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="sans">SCROLL</span>
+  </div>
+</section>
+
+<!-- CONCEPT -->
+<section class="section-concept" id="concept">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">ABOUT</span>
+    <div class="divider"></div>
+    <p class="concept-quote reveal" data-reveal="up">
+      「ただ動かすのではなく、<br>
+      ちゃんと変わっていく指導を。」
+    </p>
+    <div class="section-body reveal" data-reveal="up">
+      <p>私自身が身体をつくり続けてきたからこそ、「続けられない理由」も「変われない壁」も、体感として知っています。「結果を出す指導」と「続けられる仕組み」で、見た目だけでなく自信や生活まで整える身体づくりを提供します。</p>
+      <p>科学的根拠と実体験を組み合わせた指導で、一人ひとりの身体・目標・生活に本気で向き合います。目先の結果より、一生モノの体と習慣をつくることを大切にしています。</p>
+    </div>
+  </div>
+</section>
+
+<!-- REASONS -->
+<section class="section-reasons">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">WHY CHOOSE</span>
+    <h2 class="section-title reveal" data-reveal="up">選ばれる理由</h2>
+    <div class="reasons-grid">
+      <div class="reason-card reveal" data-reveal="up">
+        <span class="reason-num sans">01</span>
+        <h3>競技経験が裏づける指導力</h3>
+        <p>ボディビル競技に出場してきたトレーナーが担当します。理論だけでなく、実際に身体をつくってきた人間の言葉には説得力が宿ります。</p>
+      </div>
+      <div class="reason-card reveal" data-reveal="up">
+        <span class="reason-num sans">02</span>
+        <h3>完全オーダーメイドのプログラム</h3>
+        <p>マニュアル通りの指導はしません。体組成・目標・生活リズムをもとに、あなただけのプログラムを設計します。</p>
+      </div>
+      <div class="reason-card reveal" data-reveal="up">
+        <span class="reason-num sans">03</span>
+        <h3>食事・習慣まで含めたサポート</h3>
+        <p>トレーニングの時間だけでなく、食事・休息・生活習慣まで含めた「変わり続けるための土台」をつくります。</p>
+      </div>
+      <div class="reason-card reveal" data-reveal="up">
+        <span class="reason-num sans">04</span>
+        <h3>一人に向き合う、丁寧な時間</h3>
+        <p>流れ作業のセッションは行いません。毎回、あなたの状態を確認しながら、最適な内容をその場で調整します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARGET -->
+<section class="section-target">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">FOR YOU</span>
+    <h2 class="section-title reveal" data-reveal="up">こんな方へ</h2>
+    <ul class="target-list">
+      <li class="reveal" data-reveal="up">これまでのジムや指導では変われなかった</li>
+      <li class="reveal" data-reveal="up">雑な指導ではなく、丁寧に向き合ってほしい</li>
+      <li class="reveal" data-reveal="up">食事制限や筋トレを「続けられる習慣」にしたい</li>
+      <li class="reveal" data-reveal="up">競技・大会に向けて本気で身体をつくりたい</li>
+      <li class="reveal" data-reveal="up">身体だけでなく、自信や生活の質も整えたい</li>
+      <li class="reveal" data-reveal="up">本気で変わりたいと、ずっと思っている</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section-service" id="service">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">SERVICE</span>
+    <h2 class="section-title reveal" data-reveal="up">提供サービス</h2>
+    <p class="section-body sans reveal" data-reveal="up">すべてのセッションは完全予約制・マンツーマンで行います。</p>
+    <div class="service-list">
+      <div class="service-item reveal" data-reveal="up">
+        <div class="service-item-left">
+          <h3>体験トレーニング</h3>
+          <p class="sans">身体の状態・目標・悩みをヒアリングしたうえで、実際のトレーニングを体験していただきます。入会を強制することは一切ありません。</p>
+        </div>
+      </div>
+      <div class="service-item reveal" data-reveal="up">
+        <div class="service-item-left">
+          <h3>パーソナルトレーニング</h3>
+          <p class="sans">マンツーマンの
+            完全オーダーメイド指導。体組成・目標・生活習慣に合わせてプログラムを設計します。</p>
+        </div>
+      </div>
+      <div class="service-item reveal" data-reveal="up">
+        <div class="service-item-left">
+          <h3>オンラインコーチング</h3>
+          <p class="sans">場所を問わず、食事・トレーニングを総合的にサポート。毎週のフィードバックで着実に前進します。</p>
+        </div>
+      </div>
+      <div class="service-item reveal" data-reveal="up">
+        <div class="service-item-left">
+          <h3>短期集中プラン</h3>
+          <p class="sans">「決めた期間で、本気で変わる」。イベントや大会に向けて、集中的に身体をつくります。</p>
+        </div>
+      </div>
+    </div>
+    <div class="service-cta reveal" data-reveal="up">
+      <a class="btn-primary sans" href="#contact">料金・空き状況を問い合わせる</a>
+      <div class="service-note">料金・プラン詳細は、DMまたはLINEでご案内しています。目的に合わせて最適なプランをご提案します。</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINER -->
+<section class="section-trainer" id="trainer">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">TRAINER</span>
+    <h2 class="section-title reveal" data-reveal="up">トレーナー紹介</h2>
+    <div class="trainer-box reveal" data-reveal="up">
+      <div class="trainer-icon"><img src="IMG_0320.jpg" alt="永井康太"></div>
+      <p class="trainer-name">永井 康太</p>
+      <p class="trainer-title sans">PERSONAL TRAINER</p>
+      <div class="trainer-body">
+        <p>ボディビル競技経験を持ち、自ら身体をつくり続けてきたからこそ、変われない壁も、変わった瞬間の感覚も、体感として知っています。</p>
+        <p>流れ作業のセッションを繰り返すだけでは、人は変わりません。一人ひとりの身体と向き合い、その人だけの最短ルートを一緒に見つけることが、私の仕事です。</p>
+        <p>「本気で変わりたい」と思っているすべての人に、全力で向き合います。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="section-achievements" id="achievements">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">ACHIEVEMENTS</span>
+    <h2 class="section-title reveal" data-reveal="up">主な成績</h2>
+    <div class="achievements-box reveal" data-reveal="up">
+      <ul class="achievements-list">
+        <li class="achievements-item reveal" data-reveal="up"><span class="achievements-year">2021</span>JBBF東京Jrボディビル優勝🥇／東京クラス別 -70kg以下級5位／MUSCLE GATE関西 Jrボディビル準優勝🥈／クラシックフィジーク-168㎝以下級準優勝🥈</li>
+        <li class="achievements-item reveal" data-reveal="up"><span class="achievements-year">2022</span>群馬オープン3位🥉／東京クラス別10位／MUSCLE GATE北陸3位🥉</li>
+        <li class="achievements-item reveal" data-reveal="up"><span class="achievements-year">2024</span>JBBF JAPAN OPEN ミックスドペア優勝🥇／MUSCLE GATE群馬-70kg 優勝🥇</li>
+        <li class="achievements-item reveal" data-reveal="up"><span class="achievements-year">2025</span>JBBF 群馬ボディビル選手権優勝🥇</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="section-flow" id="flow">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">HOW TO START</span>
+    <h2 class="section-title reveal" data-reveal="up">体験までの流れ</h2>
+    <div class="flow-steps">
+      <div class="flow-step reveal" data-reveal="up">
+        <div class="flow-step-line">
+          <div class="flow-num sans">1</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <h3>お問い合わせ・ご予約</h3>
+          <p class="sans">LINEまたは下記フォームよりご連絡ください。希望日時をお知らせいただければ、すぐにご確認します。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal" data-reveal="up">
+        <div class="flow-step-line">
+          <div class="flow-num sans">2</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <h3>カウンセリング（約20分）</h3>
+          <p class="sans">現在の身体の状態・目標・生活習慣をヒアリングします。まずはお話をお聞かせください。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal" data-reveal="up">
+        <div class="flow-step-line">
+          <div class="flow-num sans">3</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <h3>体験トレーニング（約40分）</h3>
+          <p class="sans">実際のトレーニングを体験いただきます。あなたの現在の状態に合わせたペースで進めます。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal" data-reveal="up">
+        <div class="flow-step-line">
+          <div class="flow-num sans">4</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <h3>プランのご提案</h3>
+          <p class="sans">体験後、目標に合ったプランをご提案します。その場での入会を強制することは一切ありません。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-faq" id="faq">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">FAQ</span>
+    <h2 class="section-title reveal" data-reveal="up">よくあるご質問</h2>
+    <div class="faq-list">
+      <div class="faq-item reveal" data-reveal="up">
+        <div class="faq-q">運動が久しぶり・初めてでも大丈夫ですか？</div>
+        <p class="faq-a sans">まったく問題ありません。体験時のカウンセリングで現在の状態を確認したうえで、無理のないペースでスタートします。</p>
+      </div>
+      <div class="faq-item reveal" data-reveal="up">
+        <div class="faq-q">入会を急かされることはありますか？</div>
+        <p class="faq-a sans">ありません。体験後はプランのご案内をしますが、その場での決断を求めることは一切していません。じっくりとご検討ください。</p>
+      </div>
+      <div class="faq-item reveal" data-reveal="up">
+        <div class="faq-q">食事管理のサポートはありますか？</div>
+        <p class="faq-a sans">はい。トレーニングの指導に加え、食事・生活習慣へのアドバイスも行います。無理な制限ではなく、続けられる習慣をご提案します。</p>
+      </div>
+      <div class="faq-item reveal" data-reveal="up">
+        <div class="faq-q">オンラインコーチングはどのように進みますか？</div>
+        <p class="faq-a sans">LINEやビデオ通話を活用して、週ごとのトレーニング内容・食事・体重の変化をフィードバックしながら進めます。</p>
+      </div>
+      <div class="faq-item reveal" data-reveal="up">
+        <div class="faq-q">女性でも通えますか？</div>
+        <p class="faq-a sans">はい、もちろんです。女性のお客様も多くサポートしています。目標やペースに合わせた指導を行います。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section-contact" id="contact">
+  <div class="section-inner">
+    <span class="section-label sans reveal" data-reveal="up">CONTACT / 予約</span>
+    <h2 class="section-title reveal" data-reveal="up">お問い合わせ・体験予約</h2>
+    <div class="contact-wrap">
+      <form id="contactForm" class="reveal" data-reveal="up">
+        <div class="form-group">
+          <label>お名前</label>
+          <input type="text" name="name" placeholder="山田 太郎" required>
+        </div>
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" name="email" placeholder="example@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>お問い合わせ種別</label>
+          <select name="type" required>
+            <option value="" disabled selected>選択してください</option>
+            <option value="trial">体験トレーニングの予約</option>
+            <option value="personal">パーソナルトレーニングの相談</option>
+            <option value="online">オンラインコーチングの相談</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>メッセージ（任意）</label>
+          <textarea name="message" placeholder="ご質問・現在の状況・目標など、なんでもどうぞ"></textarea>
+        </div>
+        <button type="submit" class="btn-form-submit sans">送信する — SEND</button>
+        <div class="success-msg" id="successMsg">
+          送信しました。1〜2営業日以内にご連絡します。
+        </div>
+      </form>
+
+      <div class="reveal" data-reveal="up">
+        <div class="or-divider">または</div>
+        <!-- LINEのURLを差し替えてください -->
+        <a href="https://lin.ee/8Lshxm8" class="btn-line" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.07 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+          </svg>
+          LINEで相談・予約する
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo sans">KOTA NAGAI — PERSONAL TRAINER</div>
+  <div class="footer-info sans">
+    Instagram: @your_instagram_id<br>
+    お問い合わせはDMまたはLINEにてお気軽にどうぞ
+  </div>
+  <p class="footer-copy sans">© 2026 Kota Nagai All Rights Reserved.</p>
+</footer>
+
+<script>
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mpqkejja';
+
+  function showSuccess() {
+    const el = document.getElementById('successMsg');
+    el.style.display = 'block';
+    el.textContent = '送信しました。1〜2営業日以内にご連絡します。';
+  }
+
+  function showError(message) {
+    const el = document.getElementById('successMsg');
+    el.style.display = 'block';
+    el.textContent = message;
+  }
+
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const prevBtnText = submitBtn ? submitBtn.textContent : '';
+
+    try {
+      document.getElementById('successMsg').style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '送信中…';
+      }
+
+      if (FORMSPREE_ENDPOINT.includes('YOUR_ID')) {
+        showError('フォームの送信先（Formspree）未設定です。');
+        return;
+      }
+
+      const data = new FormData(this);
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (!res.ok) throw new Error('Request failed');
+
+      showSuccess();
+      this.reset();
+    } catch (err) {
+      showError('送信に失敗しました。お手数ですがLINEからご連絡ください。');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = prevBtnText;
+      }
+    }
+  });
+
+  // Scroll reveal
+  (function initReveal() {
+    const els = Array.from(document.querySelectorAll('.reveal'));
+    if (!('IntersectionObserver' in window) || els.length === 0) {
+      els.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const delay = Number(el.getAttribute('data-delay') || '0');
+        if (delay > 0) el.style.transitionDelay = `${delay}ms`;
+        el.classList.add('is-visible');
+        io.unobserve(el);
+      });
+    }, { root: null, threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+
+    els.forEach((el, i) => {
+      if (!el.hasAttribute('data-delay')) el.setAttribute('data-delay', String(Math.min(i * 60, 420)));
+      io.observe(el);
+    });
+  })();
+</script>
+
+</body>
+</html>
